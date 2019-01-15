@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import { history } from './_helpers';
+import { ConnectedRouter } from 'connected-react-router';
+
+import Header from './components/header'
+import Main from './components/main'
+import './css/overall-layout.css'
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ConnectedRouter history={history}>
+        <div className='border'>
+          <div className='grid-container'>
+              <div className='header'>
+                <Header/>
+              </div> 
+              
+              {/* show this div when isLoggedIn=false*/}
+              <div className='center-grid'>
+                <Main/>
+              </div>
+              {/* show these div when isLoggedIn=true*/}
+              {/*
+              <div className='aside'> 
+                  <TreeNode node={tree} 
+                    nodeSelected={this.state.nodeSelected} 
+                    onNodeClick={this.handelClick} 
+                  />
+              </div>
+              <div className='contents'> Main Contents </div>
+              */}
+
+              <div className='footer'>Copyright @2019-2020 Amiseq Inc.</div>
+          </div>
+        </div>
+      </ConnectedRouter>
     );
   }
 }

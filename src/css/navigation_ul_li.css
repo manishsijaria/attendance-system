@@ -1,0 +1,83 @@
+nav {
+    display:block;
+    z-index:0;
+    font-weight:bold;    
+}
+
+/* TODO: logo to display */
+.logo {
+    display: inline-block;
+    width: 100px;
+    height: 10px;
+}
+
+/* All the ul element which lie within nav element  */
+ nav  ul {
+    list-style-type:none;
+    background-color:rgb(10, 10, 200);
+    margin: 0;
+    padding: 0;
+}
+
+/*  All the li which are direct child in ul, 
+    All the ul which are direct child of nav
+*/
+nav >  ul > li {
+    display:inline-block; /* align from left to right*/
+}
+
+/* All the li's which lie within ul */
+.navigation_ul_li {
+    color: white;
+    text-align: center;
+    /* border-right: 1px solid #bbb;      Show the seperator */
+    padding: 10px 25px;                  /* top and bottom paddings are 8px
+                                         right and left paddings are 20px */    
+    border-bottom: 3px solid  grey;
+    /* font-size: 80%; */
+    cursor: pointer;    
+    
+}
+
+.navigation_ul_li:hover {
+    border-bottom-color: orange;
+    color:orange; 
+    
+}
+
+/* All the ul which are direct child of li */
+/* nav ul li  ul */
+/* li > ul */
+.ul_direct_child_of_li {
+    position: absolute; /* Draw it seperate from li     */
+    display:none;       /* Hide the sub-menu            */    
+    margin-top: 13px;   /* Align the top to li bottom   */
+    margin-left: -25px; /* Align the left to li left    */
+}
+
+/* nav ul li:hover  ul */
+li:hover >  ul {
+    display:block;      /* Show the sub-menu            */
+}
+
+nav ul li ul li {
+    display:block;      /* Draw the li vertically       */
+}
+
+#float-right {
+    float: right;
+}
+
+.Active {
+    background-color:limegreen;
+}
+
+/*  NavLink are displayed as <a>, so they have underline
+    text-decoration: none for removing the underline.
+    color: white for the text.
+*/
+.current {
+    text-decoration: none;
+    color: white;
+}
+
