@@ -1,0 +1,39 @@
+
+.li-treeview {
+    list-style-type: none;
+}
+
+.togglable {
+    color: rgb(5, 5, 5);
+    cursor: pointer;
+}
+
+.togglable-down::before, .togglable-up::before {
+    font-size: 12px;
+    margin-left: 0.5em; 
+}
+
+.togglable-down::before {
+    content: "▼";
+    display: inline-block;    
+}
+
+.togglable-up::before {
+    content: "▶";
+    display: inline-block;
+}
+
+.node {
+    padding-left: 5px; 
+    padding-right : 5px; 
+    cursor: default;
+    white-space: nowrap;
+}
+
+.node-selected {
+    background:  rgb(190,40,25); color: white;
+}
+
+.node-deselected {
+    background: white; color: rgb(5, 5, 5);;
+}

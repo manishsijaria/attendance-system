@@ -27,7 +27,7 @@ function login(username, password) {
                     } else {
                         let Parseduser = JSON.parse(user)
                         dispatch(success(Parseduser))
-                        dispatch(push('/'))
+                        dispatch(push('/landingpage'))
                     }
                 })
     }

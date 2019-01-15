@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Route, Switch} from 'react-router-dom'
 
 import { history } from './_helpers';
 import { ConnectedRouter } from 'connected-react-router';
 
 import Header from './components/header'
 import Main from './components/main'
+import LandingPage from './components/landingPage'
 import './css/overall-layout.css'
 
 
@@ -19,9 +21,12 @@ class App extends Component {
               </div> 
               
               {/* show this div when isLoggedIn=false*/}
-              <div className='center-grid'>
-                <Main/>
-              </div>
+              
+              <Switch>
+                <Route exact path="/landingpage"  component={LandingPage} />
+                <Route component={Main}></Route>
+              </Switch>                
+            
               {/* show these div when isLoggedIn=true*/}
               {/*
               <div className='aside'> 
