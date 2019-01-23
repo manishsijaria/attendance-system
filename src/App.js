@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import Header from './components/header'
 import Main from './components/main'
-import LandingPage from './components/landingPage'
+import { LandingPage } from './components/landingPage'
 import './css/overall-layout.css'
 
 
@@ -20,23 +20,10 @@ class App extends Component {
                 <Header/>
               </div> 
               
-              {/* show this div when isLoggedIn=false*/}
-              
               <Switch>
                 <Route exact path="/landingpage"  component={LandingPage} />
                 <Route component={Main}></Route>
               </Switch>                
-            
-              {/* show these div when isLoggedIn=true*/}
-              {/*
-              <div className='aside'> 
-                  <TreeNode node={tree} 
-                    nodeSelected={this.state.nodeSelected} 
-                    onNodeClick={this.handelClick} 
-                  />
-              </div>
-              <div className='contents'> Main Contents </div>
-              */}
 
               <div className='footer'>Copyright @2019-2020 Amiseq Inc.</div>
           </div>

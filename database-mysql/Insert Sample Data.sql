@@ -16,11 +16,13 @@ VALUES
 (4,'Recruitment Manager',''), (5, 'Recruitment Lead',''), (6, 'Recruitment Executive',''),(7, 'Sr. Recruiting Specialist',''),
 (8, 'Technical Expert',''), (9, 'Account Manager','');
 
+
+select * from employee;
 INSERT INTO `attendance_system`.`employee`
-(`employee_id`,`designation_id`,`branch_id`,`level`,`username`,`password`,`firstname`,`lastname`)
+(`employee_id`,`parent_employee_id`,`designation_id`,`branch_id`,`level`,`username`,`password`,`firstname`,`lastname`)
 VALUES
-(1,1,1,'/','admin','admin','Nilesh','Jadhav'),(2,2,1,'/1/','hr','hr','Himani','Pandey'),(3,3,1,'/2/','ac','ac','Accountent1','Surname1'),
-(4,4,2,'/3/','kumar','kumar','Kumar','Saurabh'),(5,5,2,'/3/1/','rachit','rachit','Rachit','Shukla'), (6,6,2,'/3/2/','jeet','jeet','Jeet','Singh'), (7,7,2,'/3/3/','garv','garv','Garv','Gangawala'), (8,8,2,'/4/','manish','manish','Manish','Sijaria');
+(1,null,1,1,'/','admin','admin','Nilesh','Jadhav'),(2,1,2,1,'/1/','hr','hr','Himani','Pandey'),(3,1,3,1,'/2/','ac','ac','Accountent1','Surname1'),
+(4,1,4,2,'/3/','kumar','kumar','Kumar','Saurabh'),(5,4,5,2,'/3/1/','rachit','rachit','Rachit','Shukla'), (6,4,6,2,'/3/2/','jeet','jeet','Jeet','Singh'), (7,4,7,2,'/3/3/','garv','garv','Garv','Gangawala'), (8,1,8,2,'/4/','manish','manish','Manish','Sijaria');
 
 
 
@@ -35,7 +37,12 @@ DROP table `attendance_system`.`branch`;
 DROP table `attendance_system`.`company`;
 DROP table  `attendance_system`.`designation`;
 
-select * from employee;
+select branch.country, branch.city, branch.name as branch_name, designation.name as designation_name, 
+		employee.employee_id, concat(employee.firstname, ' ', employee.lastname) as name, employee.username,
+        employee.level, employee.parent_employee_id
+from employee, branch, designation 
+where employee.branch_id = branch.branch_id and
+	  employee.designation_id = designation.designation_id;
 
 CAll `attendance_system`.`populate_calander`('2019-01-01','2019-12-31', @o_error,@o_no);
 select @o_error, @o_no;

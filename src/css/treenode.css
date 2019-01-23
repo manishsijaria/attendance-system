@@ -3,6 +3,11 @@
     list-style-type: none;
 }
 
+/* First ul */
+ul:nth-child(1) {
+    margin:0; padding: 0;
+}
+
 .togglable {
     color: rgb(5, 5, 5);
     cursor: pointer;
