@@ -5,13 +5,21 @@ import '../css/treenode.css';
 class TreeNode extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { visible: (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes};
+        this.state = { 
+            visible: (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes
+        };
     }
 
     //clicked the arrow up/down 
     toggle = (e) => {
+        //this.props.node.visible = !this.state.visible
         this.setState({visible: !this.state.visible});
-        //alert(this.state.visible)
+
+        /*
+        setTimeout(()=> { 
+            this.props.onRefresh(true)
+        }, 300)
+        */
     }
 
     //clicked/selected the text/node text/name on the node.
@@ -19,18 +27,40 @@ class TreeNode extends React.Component {
         this.props.onNodeClick(e.currentTarget.dataset.id);
     }
 
+    sumNodes = (node) => {
+        if(node.childNodes  === undefined) {
+            return 0 
+        }
+        var count =0;
+        for(var i=0; i < node.childNodes.length; i++ ) {
+            count += this.sumNodes(node.childNodes[i])
+        }
+        return node.childNodes.length;
+    }
+
     handelKeyPress = (e) => {
         //alert('here')
         switch (e.keyCode) {
             case 38: //up key 
-                alert('up key')
+                //alert('up key')
+                //alert(this.props.id)
+            
+                this.props.onHandelFocus(this.props.id -1)
+                
                 break;
             case 40: //down key
-                alert('down key')
+                //alert('down key')
+                //alert(this.props.id)
+                var counter = this.props.id;
+                if(!this.state.visible) {
+                     counter += this.sumNodes(this.props.node)
+                }
+                this.props.onHandelFocus(counter + 1)
+                
                 break;
             case 37: //left key collapse
                 //alert('left key')
-                if(this.state.visible === true) {
+                if(this.state.visible === true) {                    
                     this.setState({visible: false})
                 }
                 break;
@@ -44,18 +74,37 @@ class TreeNode extends React.Component {
                 //do nothing
         }
     }
+  
+    componentDidUpdate(prevProps, prevState) {
+        var span;
+        var thisID = this.refs[this.props.focusIndex]
+        if(!thisID) return;
+        //alert('here')
+        span = thisID.refs.span;
+        span.focus();        
+        
+    }
     render() {
         let childNodes;
         let toggleClassName,ulStyle, nodeClassName;
         let bexpandChildNodes = (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes;
-
-        if(this.props.node) {    
+        if(this.props.node) {  
+            if(this.props.node.parent_employee_id === null || this.props.node.parent_employee_id === undefined ) {
+            }
+            //If the childnodes need to be expanded than only create child
             if(this.props.node.childNodes != null) {
                 childNodes = this.props.node.childNodes.map((node, index) => {
                     return  <TreeNode key={index}  node={node} 
+                                        id={node.id}
                                         nodeSelected={this.props.nodeSelected}
                                         onNodeClick={this.props.onNodeClick}
-                                        expandChildNodes={this.state.visible}> 
+                                        expandChildNodes={this.state.visible}
+
+                                        onHandelFocus={this.props.onHandelFocus}
+                                        focusIndex={this.props.focusIndex}
+
+                                        ref={node.id}
+                                        > 
                             </TreeNode>
                             
                 })
@@ -89,7 +138,7 @@ class TreeNode extends React.Component {
         }
         
         return(
-            <ul style={ulStyle} >   
+            <ul style={ulStyle} > 
                 <li className='li-treeview'   >
                     {/* toggle up down arrow */}
                     <span className={toggleClassName} onClick={this.toggle}>  </span>
@@ -100,13 +149,13 @@ class TreeNode extends React.Component {
                             data-id={this.props.node.name} 
                             tabIndex={0} 
                             onKeyDown={this.handelKeyPress}
+                            ref={'span'}
                             >
-                        {this.props.node.name} 
+                        {this.props.node.name + ' ' + this.props.node.id} 
                     </span>
-                
+                        
                     {/* childNodes */}
                     {this.props.node.childNodes && childNodes }
-
                 </li>
             </ul>
         );
@@ -115,10 +164,7 @@ class TreeNode extends React.Component {
 
 export default TreeNode;
 
-/*
-<ul style={ulStyle} >
-</ul>
-*/
+
 /*
 <ul id="myUL">
   <li><span class="caret">Beverages</span>
