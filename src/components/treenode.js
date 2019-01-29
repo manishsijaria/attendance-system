@@ -12,14 +12,7 @@ class TreeNode extends React.Component {
 
     //clicked the arrow up/down 
     toggle = (e) => {
-        //this.props.node.visible = !this.state.visible
         this.setState({visible: !this.state.visible});
-
-        /*
-        setTimeout(()=> { 
-            this.props.onRefresh(true)
-        }, 300)
-        */
     }
 
     //clicked/selected the text/node text/name on the node.
@@ -45,7 +38,7 @@ class TreeNode extends React.Component {
                 //alert('up key')
                 //alert(this.props.id)
             
-                this.props.onHandelFocus(this.props.id -1)
+                this.props.onHandelFocus(this.props.id - 1)
                 
                 break;
             case 40: //down key
