@@ -7,7 +7,7 @@ import { employeeTreeActions } from '../_actions'
 class LandingPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { nodeSelected: '', refresh: false, focusIndex: 1};
+        this.state = { nodeSelected: '',  focusIndex: -1};
     }
     
     componentWillMount() {

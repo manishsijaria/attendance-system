@@ -6,7 +6,8 @@ class TreeNode extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            visible: (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes
+            //visible: (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes
+            visible: (this.props.expandChildNodes === undefined) ? this.props.node.expanded : this.props.expandChildNodes
         };
     }
 
@@ -17,6 +18,7 @@ class TreeNode extends React.Component {
 
     //clicked/selected the text/node text/name on the node.
     selected = (e) => {
+        this.props.onHandelFocus(this.props.id)
         this.props.onNodeClick(e.currentTarget.dataset.id);
     }
 
@@ -37,8 +39,8 @@ class TreeNode extends React.Component {
             case 38: //up key 
                 //alert('up key')
                 //alert(this.props.id)
-            
-                this.props.onHandelFocus(this.props.id - 1)
+                var decrement = this.props.id - 1
+                this.props.onHandelFocus(decrement)
                 
                 break;
             case 40: //down key
@@ -48,6 +50,7 @@ class TreeNode extends React.Component {
                 if(!this.state.visible) {
                      counter += this.sumNodes(this.props.node)
                 }
+                //alert(counter + 1)
                 this.props.onHandelFocus(counter + 1)
                 
                 break;
@@ -70,46 +73,49 @@ class TreeNode extends React.Component {
   
     componentDidUpdate(prevProps, prevState) {
         var span;
-        var thisID = this.refs[this.props.focusIndex]
-        if(!thisID) return;
-        //alert('here')
-        span = thisID.refs.span;
-        span.focus();        
-        
+        if(this.props.node.parent_employee_id === null && this.props.focusIndex === 1) {
+            span = this.refs.span
+            span.focus()
+        } else {        
+            var thisID = this.refs[this.props.focusIndex]
+            if(!thisID) return;
+            //alert('here')
+            span = thisID.refs.span;
+            span.focus();        
+        }
     }
     render() {
         let childNodes;
         let toggleClassName,ulStyle, nodeClassName;
-        let bexpandChildNodes = (this.props.expandChildNodes === undefined) ? true : this.props.expandChildNodes;
+        let bexpandChildNodes = (this.props.expandChildNodes === undefined) ? this.props.node.expanded : this.props.expandChildNodes;
+        //alert(this.props.node.name)
         if(this.props.node) {  
-            if(this.props.node.parent_employee_id === null || this.props.node.parent_employee_id === undefined ) {
-            }
             //If the childnodes need to be expanded than only create child
             if(this.props.node.childNodes != null) {
-                childNodes = this.props.node.childNodes.map((node, index) => {
-                    return  <TreeNode key={index}  node={node} 
-                                        id={node.id}
+                childNodes = this.props.node.childNodes.map((childNode, index) => {
+                    return  <TreeNode key={index}  node={childNode} 
+                                        id={childNode.id}
                                         nodeSelected={this.props.nodeSelected}
                                         onNodeClick={this.props.onNodeClick}
+
                                         expandChildNodes={this.state.visible}
 
                                         onHandelFocus={this.props.onHandelFocus}
                                         focusIndex={this.props.focusIndex}
 
-                                        ref={node.id}
+                                        ref={childNode.id}
                                         > 
                             </TreeNode>
-                            
                 })
             }
         
             //on toggeling up, visible=false, hide the li's in ul.
             //ulStyle property is applicable to this node's childNodes.
-            if(!bexpandChildNodes) {
-                ulStyle = { display: "none"};
-            } else {
+            if(bexpandChildNodes || (this.props.node.parent_employee_id === null)) {
                 ulStyle = { display: "block"}
-            }
+            } else {
+                ulStyle = { display: "none"};
+            } 
 
             //arrow character toggeling code
             toggleClassName = 'togglable';
