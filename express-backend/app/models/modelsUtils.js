@@ -86,7 +86,7 @@ module.exports.traverseTree = (tree ,slug) => {
     console.log(slug + tree.name + '/');
     tree.id = StaticNodeIndex.getNextIndex();
     if( !(tree.childNodes === undefined)) {
-        tree.expanded = false
+        tree.expanded = true
         for(var i = 0; i < tree.childNodes.length; i++) {
             this.traverseTree(tree.childNodes[i], slug + tree.name + '/')
         }
