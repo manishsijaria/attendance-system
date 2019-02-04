@@ -137,6 +137,12 @@ class TreeNode extends React.Component {
                     } else {                 
                         this.props.toggleExpanded(this.props.id)
                     }
+                } else { //move to the parent node id
+                    if(this.state.parentNodeState !== null) {
+                        this.handelFocus(this.state.parentNodeState.id)
+                    } else {
+                        this.props.onHandelFocus(this.props.parentNode.id)
+                    }
                 }
                 break;
             case 39: //right key expand
@@ -149,9 +155,9 @@ class TreeNode extends React.Component {
                     }
                 }
                 break;
-            case 13:
+            case 13: //enter key pressed.
                 this.props.onNodeClick(e.currentTarget.dataset.id)
-                break
+                break;
             default:
                 //do nothing
         }
