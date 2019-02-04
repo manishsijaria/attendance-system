@@ -84,9 +84,9 @@ class TreeNode extends React.Component {
     //clicked/selected the text/node text/name on the node.
     selected = (e) => {
         if(this.state.parentNodeState !== null) {
-            this.handelFocus(this.props.id)
+            this.handelFocus(e.currentTarget.dataset.id)
         } else {
-            this.props.onHandelFocus(this.props.id)
+            this.props.onHandelFocus(e.currentTarget.dataset.id)
         }
         this.props.onNodeClick(e.currentTarget.dataset.id);
     }
@@ -117,7 +117,11 @@ class TreeNode extends React.Component {
             case 40: //down key
                 //alert('down key')
                 //alert(this.props.id)
-                counter = this.props.id;
+                if(this.state.parentNodeState !== null) {
+                    counter = this.state.parentNodeState.id;
+                } else {
+                    counter = this.props.id;
+                }
                 if(!node.expanded) {
                      counter += this.sumNodes(this.props.node)
                 }

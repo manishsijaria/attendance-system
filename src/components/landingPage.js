@@ -28,7 +28,6 @@ class LandingPage extends React.Component {
                 <>
                     <div className='aside'>
                         <TreeNode   node={employeeTree}
-                                    id={employeeTree.id} 
                                     nodeSelected={this.state.nodeSelected} 
                                     onNodeClick={this.handelClick} 
                         />                    
