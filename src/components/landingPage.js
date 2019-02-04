@@ -20,11 +20,7 @@ class LandingPage extends React.Component {
     handelClick = (nodeValue) => {
         this.setState({ nodeSelected: nodeValue})
     }  
-    
-    handelFocus = (index) => {
-        this.setState({focusIndex: index})
-    }
-    
+   
     render() {
         const { employeeTree } = this.props
         if(!employeeTree ) { return null}
@@ -35,9 +31,6 @@ class LandingPage extends React.Component {
                                     id={employeeTree.id} 
                                     nodeSelected={this.state.nodeSelected} 
                                     onNodeClick={this.handelClick} 
-
-                                    focusIndex={this.state.focusIndex}
-                                    onHandelFocus={this.handelFocus}
                         />                    
                     </div>
                     <div className='contents'> {this.state.nodeSelected} </div>
