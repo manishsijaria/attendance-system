@@ -88,14 +88,12 @@ class TreeNode extends React.Component {
         } else {
             this.props.onHandelFocus(this.props.id)
         }
-        //this.props.onHandelFocus(this.props.id)
         this.props.onNodeClick(e.currentTarget.dataset.id);
     }
 
     handelKeyPress = (e) => {
         let node = (this.state.parentNodeState !== null) ? this.state.parentNodeState : this.props.node 
         let counter
-        //let bexpandChildNodes = (this.props.expandChildNodes === undefined) ? node.expanded : this.props.expandChildNodes;
         switch (e.keyCode) {
             case 38: //up key 
                 //alert('up key')
@@ -151,6 +149,9 @@ class TreeNode extends React.Component {
                     }
                 }
                 break;
+            case 13:
+                this.props.onNodeClick(e.currentTarget.dataset.id)
+                break
             default:
                 //do nothing
         }
@@ -253,7 +254,7 @@ class TreeNode extends React.Component {
                                 onKeyDown={this.handelKeyPress}
                                 ref={'span'}
                                 >
-                            {node.name + ' ' + node.id} 
+                            {node.name} 
                         </span>
                     </span>  
                     {/* childNodes */}
