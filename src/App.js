@@ -25,7 +25,7 @@ class App extends Component {
                 <Route component={Main}></Route>
               </Switch>                
 
-              <div className='footer'>Copyright @2019-2020 Amiseq Inc.</div>
+              <div className='footer'>Copyright @2018-2020 Amiseq Inc.</div>
           </div>
         </div>
       </ConnectedRouter>

@@ -60,6 +60,10 @@ https://stackoverflow.com/questions/13792755/show-border-grid-lines-only-between
   grid-column: span 10;                   
 }
 
+/* react-split-pane requirement for middle row */
+.middleContents {
+  grid-column: span 12;
+}
 
 /*================== Footer ================== */
 .footer {
