@@ -6,7 +6,7 @@ class TreeNode extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            parentNodeState: (this.props.node.parent_employee_id === null) ? this.props.node : null,
+            thisNodeState:  this.props.node,
             focusIndex: (this.props.node.parent_employee_id === null) ? 1 : -1
         };
     }
@@ -49,7 +49,7 @@ class TreeNode extends React.Component {
         if(tree.id === id) {
             tree.expanded = !tree.expanded
         }  
-        if( !(tree.childNodes === undefined)) {
+        else if( !(tree.childNodes === undefined)) {
             for(var i=0; i < tree.childNodes.length; i++) {
                 this.setExpanded(id, tree.childNodes[i])
             }
@@ -58,21 +58,17 @@ class TreeNode extends React.Component {
     }
 
     //clicked the arrow up/down 
+    //toggle the state of parent of child node, i.e. set thisNodeState of parent node to refresh in render method.
     toggle = (e) => {
         let id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
-        if(this.state.parentNodeState !== null) { //Top parent node
-            //alert('Top Node')
-            var tree = this.setExpanded(id, this.state.parentNodeState )
-            this.setState({ parentNodeState: tree  })
-        } else { //child nodes
-            //alert('child nodes')
-            this.props.toggleExpanded(id)
-        }
+        var tree = this.setExpanded(id, this.state.thisNodeState )
+        this.setState({ thisNodeState: tree  })
     }
 
+    //Set the state of top node, set the focusIndex of top node.
     handelFocus = (e) => {
         let id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
-        if(this.state.parentNodeState !== null) {
+        if(this.state.thisNodeState.parent_employee_id === null) {
             //alert('Top Node: ' + id)
             this.setState({ focusIndex: id })
         } else {
@@ -84,7 +80,7 @@ class TreeNode extends React.Component {
     //clicked/selected the text/node text/name on the node.
     selected = (e) => {
         let id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
-        if(this.state.parentNodeState !== null) {
+        if(this.state.thisNodeState.parent_employee_id === null) {
             this.handelFocus(id)
         } else {
             this.props.onHandelFocus(id)
@@ -93,14 +89,13 @@ class TreeNode extends React.Component {
     }
 
     handelKeyPress = (e) => {
-        let node = (this.state.parentNodeState !== null) ? this.state.parentNodeState : this.props.node 
-        let counter
+        let counter, thisNode = this.state.thisNodeState
         switch (e.keyCode) {
             case 38: //up key 
                 //alert('up key')
                 //alert(this.props.id)
                 counter  = this.props.id - 1 
-                if(this.state.parentNodeState !== null) {
+                if(thisNode.parent_employee_id === null) {
                     this.handelFocus(counter )
                 } else {
                     var thisNodeIndex = this.getChildNodeIndex(this.props.parentNode, this.props.node)
@@ -118,16 +113,16 @@ class TreeNode extends React.Component {
             case 40: //down key
                 //alert('down key')
                 //alert(this.props.id)
-                if(this.state.parentNodeState !== null) {
-                    counter = this.state.parentNodeState.id;
+                if(thisNode.parent_employee_id === null) {
+                    counter = thisNode.id;
                 } else {
                     counter = this.props.id;
                 }
-                if(!node.expanded) {
+                if(!thisNode.expanded) {
                      counter += this.sumNodes(this.props.node)
                 }
                 //alert(counter + 1)
-                if(this.state.parentNodeState !== null) {
+                if(thisNode.parent_employee_id === null) {
                     this.handelFocus(counter + 1)
                 } else {
                     this.props.onHandelFocus(counter + 1)
@@ -136,15 +131,15 @@ class TreeNode extends React.Component {
                 break;
             case 37: //left key collapse
                 //alert('left key')
-                if(node.expanded === true) {
-                    if(this.state.parentNodeState !== null) {
-                        this.toggle(this.state.parentNodeState.id)
+                if(thisNode.expanded === true) {
+                    if(thisNode.parent_employee_id === null) {
+                        this.toggle(thisNode.id)
                     } else {                 
                         this.props.toggleExpanded(this.props.id)
                     }
                 } else { //move to the parent node id
-                    if(this.state.parentNodeState !== null) {
-                        this.handelFocus(this.state.parentNodeState.id)
+                    if(thisNode.parent_employee_id === null) {
+                        this.handelFocus(thisNode.id)
                     } else {
                         this.props.onHandelFocus(this.props.parentNode.id)
                     }
@@ -152,9 +147,9 @@ class TreeNode extends React.Component {
                 break;
             case 39: //right key expand
                 //alert('right key')
-                if(node.expanded === false) {
-                    if((this.state.parentNodeState !== null)) {
-                        this.toggle(this.state.parentNodeState.id)
+                if(thisNode.expanded === false) {
+                    if((thisNode.parent_employee_id === null)) {
+                        this.toggle(thisNode.id)
                     } else {                 
                         this.props.toggleExpanded(this.props.id)
                     }
@@ -170,7 +165,7 @@ class TreeNode extends React.Component {
   
     componentDidUpdate(prevProps, prevState) {
         var span;
-        if((this.state.parentNodeState !== null) ) {
+        if((this.state.thisNodeState.parent_employee_id === null) ) {
             if(this.state.focusIndex === 1) {   //Top Node
                 span = this.refs.span
                 span.focus() 
@@ -194,9 +189,8 @@ class TreeNode extends React.Component {
         let childNodes;
         let toggleClassName,ulStyle, nodeClassName;
         
-        
-        let node = (this.state.parentNodeState !== null) ? this.state.parentNodeState : this.props.node 
-        let lfocusIndex = (this.state.parentNodeState !== null) ? this.state.focusIndex: this.props.focusIndex
+        let node = this.state.thisNodeState 
+        let lfocusIndex = (node.parent_employee_id === null) ? this.state.focusIndex: this.props.focusIndex
         //alert('node:' + node.name + ' lfocusIndex:' + lfocusIndex)
         let bexpandChildNodes = (this.props.expandChildNodes === undefined) ? node.expanded : this.props.expandChildNodes;
         if(node) {  
