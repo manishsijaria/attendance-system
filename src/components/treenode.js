@@ -71,7 +71,7 @@ class TreeNode extends React.Component {
     }
 
     handelFocus = (e) => {
-        var id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
+        let id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
         if(this.state.parentNodeState !== null) {
             //alert('Top Node: ' + id)
             this.setState({ focusIndex: id })
@@ -83,12 +83,13 @@ class TreeNode extends React.Component {
 
     //clicked/selected the text/node text/name on the node.
     selected = (e) => {
+        let id = (typeof(e) === 'object') ? parseInt(e.currentTarget.id, 10) : e
         if(this.state.parentNodeState !== null) {
-            this.handelFocus(e.currentTarget.dataset.id)
+            this.handelFocus(id)
         } else {
-            this.props.onHandelFocus(e.currentTarget.dataset.id)
+            this.props.onHandelFocus(id)
         }
-        this.props.onNodeClick(e.currentTarget.dataset.id);
+        this.props.onNodeClick(e.currentTarget.dataset.tag);
     }
 
     handelKeyPress = (e) => {
@@ -160,7 +161,7 @@ class TreeNode extends React.Component {
                 }
                 break;
             case 13: //enter key pressed.
-                this.props.onNodeClick(e.currentTarget.dataset.id)
+                this.props.onNodeClick(e.currentTarget.dataset.tag)
                 break;
             default:
                 //do nothing
@@ -259,7 +260,8 @@ class TreeNode extends React.Component {
                         {/* node attributes*/}
                         <span   onClick={this.selected} 
                                 className={nodeClassName} 
-                                data-id={node.name} 
+                                data-tag={node.name} 
+                                id={node.id}
                                 tabIndex={0} 
                                 onKeyDown={this.handelKeyPress}
                                 ref={'span'}
